@@ -9,7 +9,7 @@ import (
 	"github.com/cloudinary/cloudinary-go/api/uploader"
 )
 
-func ImageUploadHelper(input interface{}) (string, error) {
+func VideoUploadHelper(input interface{}) (string, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 

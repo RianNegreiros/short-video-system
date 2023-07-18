@@ -27,7 +27,7 @@ func (*media) FileUpload(file models.File) (string, error) {
 		return "", err
 	}
 
-	uploadUrl, err := utils.ImageUploadHelper(file.File)
+	uploadUrl, err := utils.VideoUploadHelper(file.File)
 	if err != nil {
 		return "", err
 	}
@@ -40,7 +40,7 @@ func (*media) RemoteUpload(url models.Url) (string, error) {
 		return "", err
 	}
 
-	uploadUrl, errUrl := utils.ImageUploadHelper(url.Url)
+	uploadUrl, errUrl := utils.VideoUploadHelper(url.Url)
 	if errUrl != nil {
 		return "", err
 	}
