@@ -5,7 +5,11 @@ go 1.20
 require github.com/gin-gonic/gin v1.9.1
 
 require (
+	github.com/cloudinary/cloudinary-go v1.7.0 // indirect
+	github.com/creasty/defaults v1.5.1 // indirect
 	github.com/go-sql-driver/mysql v1.5.0 // indirect
+	github.com/google/uuid v1.2.0 // indirect
+	github.com/gorilla/schema v1.2.0 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 )
 
