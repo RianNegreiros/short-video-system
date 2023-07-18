@@ -26,8 +26,10 @@ func main() {
 	public.POST("/register", controllers.Register)
 	public.POST("/login", controllers.Login)
 
-	public.POST("/upload-file", controllers.FileUpload())
-	public.POST("/upload-remote", controllers.RemoteUpload())
+	upload := r.Group("/api/upload")
+	upload.Use(middlewares.JwtAuthMiddleware())
+	upload.POST("/file", controllers.FileUpload())
+	upload.POST("/url", controllers.RemoteUpload())
 
 	protected := r.Group("/api/admin")
 	protected.Use(middlewares.JwtAuthMiddleware())
