@@ -1,13 +1,22 @@
 package main
 
 import (
+	"log"
+
 	"github.com/RianNegreiros/short-video-system/controllers"
 	"github.com/RianNegreiros/short-video-system/middlewares"
 	"github.com/RianNegreiros/short-video-system/models"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 func main() {
+	err := godotenv.Load(".env")
+
+	if err != nil {
+		log.Fatalf("Error loading .env file")
+	}
+
 	models.ConnectDataBase()
 
 	r := gin.Default()
