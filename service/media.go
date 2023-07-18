@@ -13,6 +13,7 @@ var (
 type mediaUpload interface {
 	FileUpload(file models.File) (string, error)
 	RemoteUpload(url models.Url) (string, error)
+	GetFiles() ([]models.Video, error)
 }
 
 type media struct{}
@@ -31,6 +32,7 @@ func (*media) FileUpload(file models.File) (string, error) {
 	if err != nil {
 		return "", err
 	}
+
 	return uploadUrl, nil
 }
 
@@ -45,4 +47,24 @@ func (*media) RemoteUpload(url models.Url) (string, error) {
 		return "", err
 	}
 	return uploadUrl, nil
+}
+
+func (*media) GetFiles() ([]models.Video, error) {
+	resp, err := utils.GetVideosHelper()
+	if err != nil {
+		return nil, err
+	}
+
+	var videos []models.Video
+	for _, asset := range resp.Assets {
+		videos = append(videos, models.Video{
+			VideoID:     asset.PublicID,
+			Title:       asset.PublicID,
+			Description: asset.PublicID,
+			Category:    asset.PublicID,
+			Tags:        []string{asset.PublicID},
+		})
+	}
+
+	return videos, nil
 }

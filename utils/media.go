@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/cloudinary/cloudinary-go"
+	"github.com/cloudinary/cloudinary-go/api/admin"
 	"github.com/cloudinary/cloudinary-go/api/uploader"
 )
 
@@ -28,4 +29,25 @@ func VideoUploadHelper(input interface{}) (string, error) {
 		return "", err
 	}
 	return uploadParam.SecureURL, nil
+}
+
+func GetVideosHelper() (*admin.AssetsResult, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	CloudName := os.Getenv("CLOUD_NAME")
+	CloudAPIKey := os.Getenv("CLOUD_API_KEY")
+	CloudAPISecret := os.Getenv("CLOUD_API_SECRET")
+
+	cld, err := cloudinary.NewFromParams(CloudName, CloudAPIKey, CloudAPISecret)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := cld.Admin.Assets(ctx, admin.AssetsParams{})
+	if err != nil {
+		return nil, err
+	}
+
+	return resp, nil
 }

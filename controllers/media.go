@@ -8,6 +8,30 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func GetMedia() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		media, err := service.NewMediaUpload().GetFiles()
+		if err != nil {
+			c.JSON(
+				http.StatusInternalServerError,
+				models.MediaDto{
+					StatusCode: http.StatusInternalServerError,
+					Message:    "error",
+					Data:       map[string]interface{}{"data": "Error getting media"},
+				})
+			return
+		}
+
+		c.JSON(
+			http.StatusOK,
+			models.MediaDto{
+				StatusCode: http.StatusOK,
+				Message:    "success",
+				Data:       map[string]interface{}{"data": media},
+			})
+	}
+}
+
 func FileUpload() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		formfile, _, err := c.Request.FormFile("file")
