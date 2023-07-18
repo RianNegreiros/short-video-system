@@ -1,9 +1,19 @@
 package main
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/RianNegreiros/short-video-system/controllers"
+	"github.com/RianNegreiros/short-video-system/models"
+	"github.com/gin-gonic/gin"
+)
 
 func main() {
-	router := gin.Default()
+	models.ConnectDataBase()
 
-	router.Run(":8000")
+	r := gin.Default()
+
+	public := r.Group("/api")
+
+	public.POST("/register", controllers.Register)
+
+	r.Run(":8080")
 }
