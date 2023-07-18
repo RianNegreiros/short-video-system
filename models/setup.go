@@ -7,19 +7,11 @@ import (
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	"github.com/joho/godotenv"
 )
 
 var DB *gorm.DB
 
 func ConnectDataBase() {
-
-	err := godotenv.Load(".env")
-
-	if err != nil {
-		log.Fatalf("Error loading .env file")
-	}
-
 	Dbdriver := os.Getenv("DB_DRIVER")
 	DbHost := os.Getenv("DB_HOST")
 	DbUser := os.Getenv("DB_USER")
@@ -29,7 +21,7 @@ func ConnectDataBase() {
 
 	DBURL := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local", DbUser, DbPassword, DbHost, DbPort, DbName)
 
-	DB, err = gorm.Open(Dbdriver, DBURL)
+	DB, err := gorm.Open(Dbdriver, DBURL)
 
 	if err != nil {
 		fmt.Println("Cannot connect to database ", Dbdriver)
@@ -39,5 +31,4 @@ func ConnectDataBase() {
 	}
 
 	DB.AutoMigrate(&User{})
-
 }
