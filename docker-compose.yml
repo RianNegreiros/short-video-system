@@ -22,3 +22,4 @@ services:
       DB_USER: myusername
       DB_PASSWORD: mypassword
       DB_NAME: mydatabase
+      JWT_SECRET_KEY: mysecretkey
