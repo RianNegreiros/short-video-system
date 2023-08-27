@@ -1,39 +1,32 @@
 package main
 
 import (
-	"log"
-
-	"github.com/RianNegreiros/short-video-system/controllers"
-	"github.com/RianNegreiros/short-video-system/middlewares"
+	"github.com/RianNegreiros/short-video-system/api"
 	"github.com/RianNegreiros/short-video-system/models"
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
+	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
 func main() {
-	err := godotenv.Load(".env")
-
+	db, err := models.InitDB()
 	if err != nil {
-		log.Fatalf("Error loading .env file")
+		panic(err)
+	}
+	defer db.Close()
+
+	router := gin.Default()
+
+	auth := router.Group("/api/auth")
+	{
+		auth.POST("/signup", api.SignUp)
+		auth.POST("/login", api.Login)
 	}
 
-	models.ConnectDataBase()
+	videos := router.Group("/api/videos")
+	{
+		videos.GET("/", api.GetVideos)
+		videos.POST("/", api.JWTMiddleware(), api.UploadFile)
+	}
 
-	r := gin.Default()
-
-	public := r.Group("/api")
-
-	public.POST("/register", controllers.Register)
-	public.POST("/login", controllers.Login)
-
-	upload := r.Group("/api/upload")
-	upload.Use(middlewares.JwtAuthMiddleware())
-	upload.POST("/file", controllers.FileUpload())
-	upload.POST("/url", controllers.RemoteUpload())
-
-	protected := r.Group("/api/admin")
-	protected.Use(middlewares.JwtAuthMiddleware())
-	protected.GET("/user", controllers.CurrentUser)
-
-	r.Run(":8080")
+	router.Run(":8080")
 }

@@ -1,0 +1,26 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:latest
+    container_name: my-postgres-container
+    environment:
+      POSTGRES_USER: myusername
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: mydatabase
+    ports:
+      - "5432:5432"
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: my-app-container
+    depends_on:
+      - postgres
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: myusername
+      DB_PASSWORD: mypassword
+      DB_NAME: mydatabase
+      JWT_SECRET_KEY: mysecretkey
+      VIDEO_UPLOAD_PATH: uploads
