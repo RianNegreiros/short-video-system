@@ -1,11 +1,14 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
+	"github.com/RianNegreiros/short-video-system/models"
+	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
 func main() {
-	router := gin.Default()
-
-	router.Run(":8080")
+	db, err := models.InitDB()
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
 }

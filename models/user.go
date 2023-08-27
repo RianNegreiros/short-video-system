@@ -1,7 +1,9 @@
 package models
 
+import "github.com/jinzhu/gorm"
+
 type User struct {
-	UserID   uint
-	Username string
+	gorm.Model
+	Username string `gorm:"unique_index"`
 	Password string
 }
