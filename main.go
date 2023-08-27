@@ -22,5 +22,11 @@ func main() {
 		auth.POST("/login", api.Login)
 	}
 
+	videos := router.Group("/api/videos")
+	{
+		videos.GET("/", api.GetVideos)
+		videos.POST("/", api.JWTMiddleware(), api.UploadFile)
+	}
+
 	router.Run(":8080")
 }

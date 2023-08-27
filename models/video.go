@@ -7,4 +7,6 @@ type Video struct {
 	Description string
 	Category    string
 	Tags        []string
+	FileName    string
+	FilePath    string
 }
